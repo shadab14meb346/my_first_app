@@ -1,0 +1,17 @@
+{%- if block.settings.heading -%}
+<h2 id>{{ block.settings.heading }}</h2>
+<div id="tiktok-shoppable-feed-shadab"></div>
+<script src="{{ 'tiktok_shoppable_feed.js'  | asset_url }}" defer></script>
+
+{%- endif -%}
+{% schema %}
+{ "name":"Shadab tiktok feed",
+  "target":"section",
+  "settings":[{
+    "type": "text",
+    "id": "heading",
+    "label": "Heading",
+    "default":"Shoppable TikTok feed"
+  } ] 
+}
+{% endschema %}
