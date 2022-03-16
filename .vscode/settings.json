@@ -1,13 +1,3 @@
 {
-  "liquid.format": true,
-  "liquid.rules": {
-    // Ignored tags
-    "ignore": [
-      {
-        "type": "", // Accepts html or liquid
-        "begin": "", // The start tag pattern
-        "end": "" // the ending tag pattern/name
-      }
-    ]
-  }
+  "liquid.format": true
 }
