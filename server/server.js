@@ -6,6 +6,9 @@ import Shopify, { ApiVersion } from "@shopify/shopify-api";
 import Koa from "koa";
 import next from "next";
 import Router from "koa-router";
+import bodyParser from "koa-bodyparser";
+import connectDB from "./rest-apis/lib/db";
+import tagRouter from "./rest-apis/resources/tag/tag.router";
 
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
@@ -31,9 +34,14 @@ Shopify.Context.initialize({
 const ACTIVE_SHOPIFY_SHOPS = {};
 
 app.prepare().then(async () => {
+  await connectDB();
+  console.log("Connected to database");
   const server = new Koa();
   const router = new Router();
   server.keys = [Shopify.Context.API_SECRET_KEY];
+  server.use(bodyParser());
+  server.use(tagRouter.routes());
+
   server.use(
     createShopifyAuth({
       async afterAuth(ctx) {
@@ -68,6 +76,12 @@ app.prepare().then(async () => {
     ctx.respond = false;
     ctx.res.statusCode = 200;
   };
+
+  router.get("/test", async (ctx) => {
+    console.log(ctx);
+    console.log("HELLO11", ctx.query.shop);
+    ctx.body = "Hello World111";
+  });
 
   router.post("/webhooks", async (ctx) => {
     try {
