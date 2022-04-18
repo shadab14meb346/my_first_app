@@ -3,8 +3,17 @@ import { Button, TextField } from "@shopify/polaris";
 
 export const Form = () => {
   const [value, setValue] = React.useState("");
+  React.useEffect(() => {
+    makeAGetRequest();
+  }, []);
 
   const handleChange = React.useCallback((newValue) => setValue(newValue), []);
+
+  const makeAGetRequest = async () => {
+    const response = await fetch(`/test`);
+    const json = await response.json();
+    console.log(json);
+  };
 
   return (
     <>

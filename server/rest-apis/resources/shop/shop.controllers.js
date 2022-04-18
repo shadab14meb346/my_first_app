@@ -1,5 +1,5 @@
 // const atomicCrudControllers = require("../../utils/crud");
-import Tag from "./tag.model";
+import Tag from "./shop.model";
 // const basicCrudControllers = atomicCrudControllers(Tag);
 
 const createOne = async (ctx, next) => {
@@ -14,7 +14,6 @@ const createOne = async (ctx, next) => {
 };
 
 const getOne = async (ctx, next) => {
-  console.log(ctx.state);
   ctx.body = "Hello Shadab";
 };
 const crudControllers = {

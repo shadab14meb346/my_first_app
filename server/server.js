@@ -34,13 +34,13 @@ Shopify.Context.initialize({
 const ACTIVE_SHOPIFY_SHOPS = {};
 
 app.prepare().then(async () => {
-  await connectDB();
+  await connectDB(
+    "mongodb+srv://test-user:e63qInszKTYbDy2O@cluster0.3uu8d.mongodb.net/tiktokfeeddb"
+  );
   console.log("Connected to database");
   const server = new Koa();
   const router = new Router();
   server.keys = [Shopify.Context.API_SECRET_KEY];
-  server.use(bodyParser());
-  server.use(tagRouter.routes());
 
   server.use(
     createShopifyAuth({
@@ -70,18 +70,13 @@ app.prepare().then(async () => {
       },
     })
   );
-
+  server.use(bodyParser());
+  server.use(tagRouter.routes());
   const handleRequest = async (ctx) => {
     await handle(ctx.req, ctx.res);
     ctx.respond = false;
     ctx.res.statusCode = 200;
   };
-
-  router.get("/test", async (ctx) => {
-    console.log(ctx);
-    console.log("HELLO11", ctx.query.shop);
-    ctx.body = "Hello World111";
-  });
 
   router.post("/webhooks", async (ctx) => {
     try {
@@ -99,7 +94,10 @@ app.prepare().then(async () => {
       await Shopify.Utils.graphqlProxy(ctx.req, ctx.res);
     }
   );
-
+  router.get("/test", async (ctx) => {
+    const response = await Shopify.Utils.loadCurrentSession(ctx.req, ctx.res);
+    console.log(response, "response");
+  });
   router.get("(/_next/static/.*)", handleRequest); // Static content is clear
   router.get("/_next/webpack-hmr", handleRequest); // Webpack content is clear
   router.get("(.*)", async (ctx) => {

@@ -3,7 +3,7 @@ import { Form } from "../components/From";
 
 const Index = () => (
   <Page>
-    <Heading>TikTok Feed</Heading>
+    <Heading>TikTok Feed1</Heading>
     <Form />
   </Page>
 );
